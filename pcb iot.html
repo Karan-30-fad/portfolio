@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📘 7-Day Learning Journey of IoT and PCB Design</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            min-height: 100vh;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
+        }
+
+        header {
+            background: linear-gradient(135deg, #2c3e50, #3498db);
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .header-line {
+            width: 200px;
+            height: 3px;
+            background: #e74c3c;
+            margin: 1rem auto;
+            border-radius: 2px;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: center;
+            padding: 2rem 0;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .navigation::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        .nav-container {
+            display: flex;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 50px;
+            padding: 8px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            position: relative;
+            z-index: 1;
+        }
+
+        .nav-btn {
+            background: none;
+            border: none;
+            color: #6c757d;
+            padding: 1rem 2.5rem;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: 600;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 40px;
+            position: relative;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .nav-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 40px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transform: translate(-50%, -50%);
+            z-index: -1;
+        }
+
+        .nav-btn:hover::before {
+            width: 100%;
+            height: 100%;
+        }
+
+        .nav-btn:hover {
+            color: white;
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .nav-btn.active {
+            color: white;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+            transform: translateY(-1px);
+        }
+
+        .nav-btn.active::before {
+            width: 100%;
+            height: 100%;
+        }
+
+        .nav-indicator {
+            position: absolute;
+            bottom: -2px;
+            height: 4px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 2px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .nav-icon {
+            font-size: 1.2rem;
+            transition: transform 0.3s ease;
+        }
+
+        .nav-btn:hover .nav-icon {
+            transform: rotate(10deg) scale(1.1);
+        }
+
+        .nav-btn.active .nav-icon {
+            transform: scale(1.2);
+        }
+
+        .content {
+            padding: 2rem;
+        }
+
+        .module {
+            display: none;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .module.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .day-card {
+            background: white;
+            margin: 2rem 0;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .day-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+        }
+
+        .day-header {
+            background: linear-gradient(135deg, #e74c3c, #f39c12);
+            color: white;
+            padding: 1.5rem;
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .pcb-day .day-header {
+            background: linear-gradient(135deg, #27ae60, #2ecc71);
+        }
+
+        .day-content {
+            padding: 2rem;
+        }
+
+        .day-description {
+            margin-bottom: 2rem;
+        }
+
+        .program-list {
+            margin: 1.5rem 0;
+        }
+
+        .program-item {
+            background: #f8f9fa;
+            padding: 1rem;
+            margin: 0.5rem 0;
+            border-left: 4px solid #3498db;
+            border-radius: 0 8px 8px 0;
+            transition: all 0.3s ease;
+        }
+
+        .program-item:hover {
+            background: #e3f2fd;
+            transform: translateX(5px);
+        }
+
+        .program-title {
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+        }
+
+        .images-section {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: #f8f9fa;
+            border-radius: 10px;
+            width: 100%;
+            max-width: 100%;
+            box-sizing: border-box;
+            overflow: hidden;
+        }
+
+        .images-section h3 {
+            margin-bottom: 1rem;
+            text-align: center;
+            color: #2c3e50;
+        }
+
+        .images-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+            width: 100%;
+            max-width: 100%;
+        }
+
+        .image-placeholder {
+            aspect-ratio: 1;
+            width: 100%;
+            background: linear-gradient(135deg, #bdc3c7, #95a5a6);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 0.9rem;
+            border: 3px dashed rgba(255, 255, 255, 0.5);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            text-align: center;
+            padding: 1rem;
+            box-sizing: border-box;
+            word-wrap: break-word;
+            max-width: 100%;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Specific styles for actual images */
+        .image-placeholder img,
+        .images-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            max-width: 100%;
+            max-height: 100%;
+            border-radius: 8px;
+            background: #f8f9fa;
+        }
+
+        /* Container for images with square aspect ratio */
+        .image-container {
+            aspect-ratio: 1;
+            width: 100%;
+            background: white;
+            border-radius: 10px;
+            padding: 0.5rem;
+            box-sizing: border-box;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .image-container:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+        }
+
+        .image-placeholder:hover {
+            transform: scale(1.02);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            background: linear-gradient(135deg, #95a5a6, #7f8c8d);
+        }
+
+        footer {
+            background: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 3rem;
+        }
+
+        .mentors {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+            margin-top: 1rem;
+        }
+
+        .mentor {
+            background: #34495e;
+            padding: 1rem 1.5rem;
+            border-radius: 25px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .mentor:hover {
+            background: #3498db;
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .nav-container {
+                flex-direction: column;
+                border-radius: 20px;
+                padding: 6px;
+            }
+            
+            .nav-btn {
+                width: 100%;
+                justify-content: center;
+                margin: 2px 0;
+                padding: 0.8rem 1.5rem;
+                border-radius: 15px;
+            }
+            
+            .images-container {
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                gap: 0.8rem;
+            }
+            
+            .image-placeholder {
+                font-size: 0.8rem;
+                padding: 0.8rem;
+            }
+            
+            .mentors {
+                flex-direction: column;
+                align-items: center;
+                gap: 1rem;
+            }
+            
+            .content {
+                padding: 1rem;
+            }
+            
+            .day-content {
+                padding: 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .images-container {
+                gap: 0.5rem;
+                grid-template-columns: 1fr;
+            }
+            
+            .image-placeholder {
+                font-size: 0.75rem;
+                padding: 0.5rem;
+            }
+            
+            .images-section {
+                padding: 1rem;
+            }
+        }
+
+        .module-title {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            color: #2c3e50;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .iot-title {
+            background: linear-gradient(135deg, #e74c3c, #f39c12);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .pcb-title {
+            background: linear-gradient(135deg, #27ae60, #2ecc71);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📘 7-Day Learning Journey of IoT and PCB Design</h1>
+            <div class="header-line"></div>
+        </header>
+
+        <nav class="navigation">
+            <div class="nav-container">
+                <button class="nav-btn active" onclick="showModule('iot')">
+                    <span class="nav-icon">🔌</span>
+                    IoT Module (Days 1-4)
+                </button>
+                <button class="nav-btn" onclick="showModule('pcb')">
+                    <span class="nav-icon">⚡</span>
+                    PCB Design (Days 5-7)
+                </button>
+            </div>
+        </nav>
+
+        <div class="content">
+            <!-- IoT Module -->
+            <div id="iot" class="module active">
+                <h2 class="module-title iot-title">Internet of Things (IoT) Module</h2>
+                
+                <!-- Day 1 -->
+                <div class="day-card">
+                    <div class="day-header">Day 1 – IoT Module</div>
+                    <div class="day-content">
+                        <div class="day-description">
+                            <strong>Introduction to ESP8266:</strong> Learned about ESP8266 microcontroller, its pinout, specifications, and use in IoT projects.
+                        </div>
+                        <div class="program-list">
+                            <div class="program-item">
+                                <div class="program-title">Installing Arduino IDE</div>
+                                Step-by-step installation and configuration for programming ESP8266.
+                            </div>
+                            <div class="program-item">
+                                <div class="program-title">Setting up Arduino IDE for ESP8266</div>
+                                Added ESP8266 board manager URL and installed required libraries.
+                            </div>
+                            <div class="program-item">
+                                <div class="program-title">Mini Program – Blink Internal LED</div>
+                                Wrote and uploaded first program to blink onboard LED.
+                            </div>
+                            <div class="program-item">
+                                <div class="program-title">Mini Program – Blink External LED</div>
+                                Connected external LED to ESP8266 and controlled it via GPIO pins.
+                            </div>
+                        </div>
+                        <div class="images-section">
+                            <h3>📷 Day 1 Images</h3>
+                            <div class="images-container">
+                                <div class="image-placeholder"><img src="14-1.png" alt=""></div>
+                                <div class="image-placeholder"><img src="iot10.jpeg" alt=""></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Day 2 -->
+                <div class="day-card">
+                    <div class="day-header">Day 2 – IoT Module</div>
+                    <div class="day-content">
+                        <div class="day-description">
+                            <strong>Introduction to Wi-Fi in IoT:</strong> Learned how Wi-Fi enables IoT communication and networking basics (IP, SSID, password).
+                        </div>
+                        <div class="program-list">
+                            <div class="program-item">
+                                <div class="program-title">Wi-Fi Setup in ESP8266</div>
+                                Connected ESP8266 to a Wi-Fi network.
+                            </div>
+                            <div class="program-item">
+                                <div class="program-title">Program 1 – Connect ESP8266 to Wi-Fi</div>
+                                Verified connection by printing IP address in Serial Monitor.
+                            </div>
+                            <div class="program-item">
+                                <div class="program-title">Program 2 – Simple Web Server</div>
+                                Created a basic web page hosted on ESP8266 to control LED ON/OFF via browser.
+                            </div>
+                        </div>
+                        <div class="images-section">
+                            <h3>📷 Day 2 Images</h3>
+                            <div class="images-container">
+                                <div class="image-placeholder"><img src="15-2.png" alt=""></div>
+                                <div class="image-placeholder"><img src="15-3.jpeg" alt=""></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Day 3 -->
+                <div class="day-card">
+                    <div class="day-header">Day 3 – IoT Module</div>
+                    <div class="day-content">
+                        <div class="day-description">
+                            <strong>Quick Recap:</strong> Reviewed Wi-Fi connection and web server setup from Day 2.
+                        </div>
+                        <div class="program-list">
+                            <div class="program-item">
+                                <div class="program-title">Ultrasonic Sensor with ESP8266</div>
+                                Introduction to sensor interfacing and data acquisition.
+                            </div>
+                            <div class="program-item">
+                                <div class="program-title">Program 1 – Distance Measurement</div>
+                                Interfaced ultrasonic sensor, measured distance, and printed results in Serial Monitor.
+                            </div>
+                            <div class="program-item">
+                                <div class="program-title">Program 2 – Live Web Page</div>
+                                Displayed live sensor data on a web page for real-time monitoring.
+                            </div>
+                        </div>
+                        <div class="images-section">
+                            <h3>📷 Day 3 Images</h3>
+                            <div class="images-container">
+                                <div class="image-placeholder"><img src="16-3.jpeg" alt=""></div>
+                                <div class="image-placeholder"><img src="16-1.png" alt=""></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Day 4 -->
+                <div class="day-card">
+                    <div class="day-header">Day 4 – IoT Module</div>
+                    <div class="day-content">
+                        <div class="day-description">
+                            <strong>Project Concept Discussion:</strong> Chose a mini IoT project based on sensor data and web control.
+                        </div>
+                        <div class="program-list">
+                            <div class="program-item">
+                                <div class="program-title">MIT App Inventor Setup</div>
+                                Installed and explored App Inventor interface.
+                            </div>
+                            <div class="program-item">
+                                <div class="program-title">App Design & Programming</div>
+                                Created a simple mobile app to display sensor data and control outputs.
+                            </div>
+                            <div class="program-item">
+                                <div class="program-title">Integration</div>
+                                Connected the app with ESP8266 and successfully tested data transfer and control.
+                            </div>
+                        </div>
+                        <div class="images-section">
+                            <h3>📷 Day 4 Images</h3>
+                            <div class="images-container">
+                                <div class="image-placeholder"><img src="iot6.jpeg" alt=""></div>
+                                <div class="image-placeholder"><img src="123.jpeg" alt=""></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PCB Module -->
+            <div id="pcb" class="module">
+                <h2 class="module-title pcb-title">PCB Design Module</h2>
+
+                <!-- Day 5 -->
+                <div class="day-card pcb-day">
+                    <div class="day-header">Day 5 – PCB Designing Module</div>
+                    <div class="day-content">
+                        <div class="day-description">
+                            <strong>AC to DC Converter Schematic:</strong> Designed schematic for a basic AC to DC converter circuit.
+                        </div>
+                        <div class="program-list">
+                            <div class="program-item">
+                                <div class="program-title">PCB Basics</div>
+                                Learned about PCB layers, traces, vias, footprints, and design rules.
+                            </div>
+                            <div class="program-item">
+                                <div class="program-title">PPT Session</div>
+                                Discussed real-life applications of PCB and best design practices.
+                            </div>
+                        </div>
+                        <div class="images-section">
+                            <h3>📷 Day 5 Images</h3>
+                            <div class="images-container">
+                                <div class="image-placeholder"><img src="Screenshot 2025-09-18 220624.png" alt=""></div>
+                                <div class="image-placeholder"><img src="Screenshot 2025-09-19 213352.png" alt=""></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Day 6 -->
+                <div class="day-card pcb-day">
+                    <div class="day-header">Day 6 – PCB Designing Module</div>
+                    <div class="day-content">
+                        <div class="day-description">
+                            <strong>AC to DC Converter Layout:</strong> Converted schematic to PCB layout using design software.
+                        </div>
+                        <div class="program-list">
+                            <div class="program-item">
+                                <div class="program-title">Component Placement & Routing</div>
+                                Practiced placement, routing, and checking for DRC (Design Rule Check) errors.
+                            </div>
+                            <div class="program-item">
+                                <div class="program-title">Hands-on Session</div>
+                                Students worked on layout tools independently under guidance.
+                            </div>
+                        </div>
+                        <div class="images-section">
+                            <h3>📷 Day 6 Images</h3>
+                            <div class="images-container">
+                                <div class="image-placeholder"><img src="Screenshot 2025-09-19 215742.png" alt=""></div>
+                                <div class="image-placeholder"><img src="Screenshot 2025-09-19 220344.png" alt=""></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Day 7 -->
+                <div class="day-card pcb-day">
+                    <div class="day-header">Day 7 – PCB Designing Module</div>
+                    <div class="day-content">
+                        <div class="day-description">
+                            <strong>DC Motor Speed Controller Schematic:</strong> Designed schematic for DC motor control circuit.
+                        </div>
+                        <div class="program-list">
+                            <div class="program-item">
+                                <div class="program-title">Layout Designing</div>
+                                Converted schematic to layout and routed connections.
+                            </div>
+                            <div class="program-item">
+                                <div class="program-title">Discussion & Q&A</div>
+                                Cleared doubts related to layout design, simulation, and real-world implementation.
+                            </div>
+                        </div>
+                        <div class="images-section">
+                            <h3>📷 Day 7 Images</h3>
+                            <div class="images-container">
+                                <div class="image-placeholder"><img src="WhatsApp Image 2025-09-20 at 6.14.14 PM.jpeg" alt=""></div>
+                                <div class="image-placeholder"><img src="pcb6.jpeg" alt=""></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <h3>👨‍🏫 Mentors</h3>
+            <div class="mentors">
+                <div class="mentor">Rakesh Lande (FOR IOT)</div>
+                <div class="mentor">Rohan Khandar (FOR PCB)</div>
+                <div class="mentor">Tejas Tarankar (FOR PCB)</div>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        function showModule(moduleId) {
+            // Hide all modules
+            const modules = document.querySelectorAll('.module');
+            modules.forEach(module => {
+                module.classList.remove('active');
+            });
+
+            // Remove active class from all nav buttons
+            const navButtons = document.querySelectorAll('.nav-btn');
+            navButtons.forEach(btn => {
+                btn.classList.remove('active');
+            });
+
+            // Show selected module
+            document.getElementById(moduleId).classList.add('active');
+
+            // Add active class to clicked button
+            event.target.classList.add('active');
+
+            // Add smooth scroll to top
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+
+        // Add smooth scrolling and enhanced interactions
+        document.addEventListener('DOMContentLoaded', function() {
+            // Animate cards on scroll
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            });
+
+            const cards = document.querySelectorAll('.day-card');
+            cards.forEach(card => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(30px)';
+                card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                observer.observe(card);
+            });
+
+            // Add click effects to image placeholders
+            const imagePlaceholders = document.querySelectorAll('.image-placeholder');
+            imagePlaceholders.forEach(placeholder => {
+                placeholder.addEventListener('click', function() {
+                    this.style.transform = 'scale(0.95)';
+                    setTimeout(() => {
+                        this.style.transform = 'scale(1.02)';
+                    }, 100);
+                });
+            });
+        });
+    </script>
+</body>
+</html>

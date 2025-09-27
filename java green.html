@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Java OOPs Learning Journey Documentation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #134e5e 0%, #71b280 50%, #2dd4bf 100%);
+            min-height: 100vh;
+            padding: 20px;
+            line-height: 1.6;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 30% 40%, rgba(255,255,255,0.1) 0%, transparent 50%),
+                        radial-gradient(circle at 70% 80%, rgba(255,255,255,0.08) 0%, transparent 50%),
+                        radial-gradient(circle at 20% 90%, rgba(255,255,255,0.05) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 25px;
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.15), 
+                        0 15px 35px rgba(0, 0, 0, 0.1),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.6);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #134e5e, #71b280, #2dd4bf, #5eead4, #a7f3d0);
+            z-index: 10;
+        }
+
+        .main-header {
+            background: linear-gradient(135deg, #134e5e 0%, #71b280 50%, #2dd4bf 100%);
+            color: white;
+            text-align: center;
+            padding: 50px 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .main-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="8" height="8" patternUnits="userSpaceOnUse"><path d="M 8 0 L 0 0 0 8" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+            opacity: 0.6;
+            animation: float 25s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-15px) rotate(2deg); }
+        }
+
+        .main-header h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            font-family: 'Playfair Display', 'Times New Roman', serif;
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 1;
+            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+            background: linear-gradient(45deg, #ffffff, #f0f8ff, #e8f4f8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .main-header .subtitle {
+            font-size: 1.8rem;
+            opacity: 0.95;
+            position: relative;
+            z-index: 1;
+            font-weight: 500;
+            font-family: 'Playfair Display', 'Georgia', serif;
+            letter-spacing: 0.8px;
+            margin-top: 15px;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+            font-style: italic;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .overview-section {
+            margin-bottom: 50px;
+            border: none;
+            border-radius: 20px;
+            padding: 35px;
+            background: linear-gradient(145deg, #f8f9fa 0%, #e9ecef 100%);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.1), 
+                        0 4px 15px rgba(102, 126, 234, 0.05),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.8);
+        }
+
+        .overview-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, #134e5e, #71b280, #2dd4bf);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s ease;
+        }
+
+        .overview-section:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 25px 50px rgba(19, 78, 94, 0.2), 
+                        0 15px 30px rgba(19, 78, 94, 0.15),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.9);
+        }
+
+        .overview-section:hover::before {
+            transform: scaleX(1);
+        }
+
+        .day-section {
+            margin-bottom: 50px;
+            border: none;
+            border-radius: 20px;
+            padding: 35px;
+            background: linear-gradient(145deg, #ffffff 0%, #f8fbff 100%);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.1), 
+                        0 4px 15px rgba(102, 126, 234, 0.05),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.8);
+        }
+
+        .day-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, #134e5e, #71b280, #2dd4bf, #5eead4, #a7f3d0, #134e5e);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s ease;
+        }
+
+        .day-section:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 25px 50px rgba(19, 78, 94, 0.2), 
+                        0 15px 30px rgba(19, 78, 94, 0.15),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.9);
+        }
+
+        .day-section:hover::before {
+            transform: scaleX(1);
+        }
+
+        .section-heading {
+            background: linear-gradient(135deg, #134e5e, #71b280, #2dd4bf);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid transparent;
+            border-image: linear-gradient(90deg, #134e5e, #71b280, #2dd4bf) 1;
+            display: inline-block;
+            text-shadow: 0 2px 10px rgba(19, 78, 94, 0.3);
+            position: relative;
+        }
+
+        .section-heading::after {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 0;
+            width: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #134e5e, #71b280, #2dd4bf);
+            transition: width 0.4s ease;
+        }
+
+        .day-section:hover .section-heading::after {
+            width: 100%;
+        }
+
+        .day-description {
+            font-size: 1.1rem;
+            color: #444;
+            margin-bottom: 25px;
+            padding: 25px;
+            background: linear-gradient(135deg, #ffffff 0%, #f8fbff 100%);
+            border-radius: 15px;
+            border-left: 5px solid transparent;
+            border-image: linear-gradient(135deg, #667eea, #764ba2, #f093fb) 1;
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.08),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.9);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .day-description::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: linear-gradient(135deg, #134e5e, #71b280, #2dd4bf);
+        }
+
+        .code-section {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border: 2px solid #71b280;
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 15px;
+            position: relative;
+            overflow-x: auto;
+        }
+
+        .code-section::before {
+            content: '💻';
+            font-size: 1.2rem;
+            margin-right: 8px;
+        }
+
+        .code-section strong {
+            color: #134e5e;
+        }
+
+        .code-block {
+            background: #2d3748;
+            color: #e2e8f0;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 15px 0;
+            overflow-x: auto;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            position: relative;
+        }
+
+        .code-block::before {
+            content: 'Java';
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            background: #71b280;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: bold;
+        }
+
+        .learning-outcomes {
+            margin-top: 60px;
+            padding: 45px;
+            background: #ffffff;
+            border-radius: 25px;
+            color: #2c3e50;
+            margin-bottom: 30px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08),
+                        0 5px 15px rgba(0, 0, 0, 0.04);
+            border: 1px solid #e8ecf0;
+        }
+
+        .outcomes-heading {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 25px;
+            text-align: center;
+            color: #2c3e50;
+        }
+
+        .outcomes-description {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 18px;
+            border: 1px solid #e8ecf0;
+            position: relative;
+            z-index: 1;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            color: #34495e;
+        }
+
+        .outcomes-description::before {
+            content: "🎯";
+            font-size: 1.5rem;
+            margin-right: 10px;
+        }
+
+        .footer {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 50%, #2c3e50 100%);
+            color: white;
+            text-align: center;
+            padding: 35px 20px;
+            font-size: 1.1rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, #134e5e, #71b280, #2dd4bf, #5eead4, #a7f3d0, #134e5e);
+        }
+
+        .footer .highlight {
+            background: linear-gradient(135deg, #27ae60, #2ecc71, #16a085);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 800;
+            font-size: 1.3rem;
+            font-family: 'Georgia', 'Times New Roman', serif;
+            text-shadow: 0 2px 10px rgba(39, 174, 96, 0.4);
+            letter-spacing: 0.5px;
+        }
+
+        @media (max-width: 768px) {
+            .main-header h1 {
+                font-size: 2.5rem;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+            
+            .day-section {
+                padding: 20px;
+            }
+            
+            .learning-outcomes {
+                padding: 25px;
+            }
+            
+            .outcomes-heading {
+                font-size: 2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+            
+            .main-header h1 {
+                font-size: 2rem;
+            }
+            
+            .section-heading {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="main-header">
+            <h1>☕ Java OOPs Journey</h1>
+            <div class="subtitle">7-Day Object-Oriented Programming Mastery</div>
+        </header>
+        
+        <div class="content">
+            <!-- Overview Section -->
+            <section class="overview-section">
+                <h2 class="section-heading">📘 Overview</h2>
+                <div class="day-description">
+                    This documentation showcases my 7-day structured learning plan (2 hours/day) to master Object-Oriented Programming (OOPs) in Java. Each day I studied theory, implemented concepts, and practiced with hands-on code. By the end, I had a solid grasp of the four OOP pillars (Encapsulation, Abstraction, Inheritance, Polymorphism) and built a mini Library Management System project.
+                </div>
+            </section>
+
+            <!-- Day 1 Section -->
+            <section class="day-section">
+                <h2 class="section-heading">Day 1 – Programming Fundamentals</h2>
+                <div class="day-description">
+                    <strong>Learning Focus:</strong><br>
+                    • Variables, operators, loops, and conditionals<br>
+                    • Writing functions and simple problem-solving<br>
+                    • Implemented factorial, prime checking, and Fibonacci algorithms<br><br>
+                    
+                    Started my Java journey with core programming concepts. Learned how to use different data types, control structures, and create reusable functions. The practice problems helped solidify my understanding of basic algorithmic thinking.
+                </div>
+                <div class="code-section">
+                    <strong>Code Implementation:</strong>
+                    <div class="code-block">// Day1Basics.java
+public class Day1Basics {
+    static int factorial(int n) {
+        int result = 1;
+        for (int i = 2; i <= n; i++) result *= i;
+        return result;
+    }
+
+    static boolean isPrime(int n) {
+        if (n <= 1) return false;
+        for (int i = 2; i * i <= n; i++) if (n % i == 0) return false;
+        return true;
+    }
+
+    public static void main(String[] args) {
+        int a = 10, b = 3;
+        System.out.println("a + b = " + (a + b));
+        System.out.println("Factorial of 5 = " + factorial(5));
+        System.out.println("Is 13 prime? " + isPrime(13));
+    }
+}</div>
+                </div>
+            </section>
+
+            <!-- Day 2 Section -->
+            <section class="day-section">
+                <h2 class="section-heading">Day 2 – Functions & Recursion</h2>
+                <div class="day-description">
+                    <strong>Learning Focus:</strong><br>
+                    • Modular programming with functions<br>
+                    • Understanding recursion concepts<br>
+                    • Implementing recursive solutions for factorial and Fibonacci<br><br>
+                    
+                    Explored the power of modular programming and recursive thinking. Learned how functions can call themselves and the importance of base cases. Recursion opened up new ways to solve problems elegantly.
+                </div>
+                <div class="code-section">
+                    <strong>Code Implementation:</strong>
+                    <div class="code-block">// Day2Functions.java
+public class Day2Functions {
+    static int factorialRec(int n) {
+        if (n <= 1) return 1;
+        return n * factorialRec(n - 1);
+    }
+
+    static int fibRec(int n) {
+        if (n <= 1) return n;
+        return fibRec(n - 1) + fibRec(n - 2);
+    }
+
+    public static void main(String[] args) {
+        System.out.println("Factorial(5) = " + factorialRec(5));
+        System.out.println("Fibonacci(6) = " + fibRec(6));
+    }
+}</div>
+                </div>
+            </section>
+
+            <!-- Day 3 Section -->
+            <section class="day-section">
+                <h2 class="section-heading">Day 3 – Classes & Objects</h2>
+                <div class="day-description">
+                    <strong>Learning Focus:</strong><br>
+                    • Introduction to Object-Oriented Programming<br>
+                    • Creating classes, objects, constructors, and methods<br>
+                    • Implemented a Car class with real-world attributes and behaviors<br><br>
+                    
+                    This was my first step into OOP! Learned how to model real-world entities as classes and create multiple instances (objects) from them. The Car example helped me understand the relationship between classes and objects.
+                </div>
+                <div class="code-section">
+                    <strong>Code Implementation:</strong>
+                    <div class="code-block">// Car.java
+class Car {
+    String brand, model;
+    int year, mileage;
+
+    Car(String brand, String model, int year, int mileage) {
+        this.brand = brand;
+        this.model = model;
+        this.year = year;
+        this.mileage = mileage;
+    }
+
+    void drive(int km) {
+        mileage += km;
+        System.out.println("Driven " + km + " km. Mileage: " + mileage);
+    }
+
+    void display() {
+        System.out.println(brand + " " + model + " (" + year + ") - " + mileage + " km");
+    }
+}
+
+public class Day3CarDemo {
+    public static void main(String[] args) {
+        Car c1 = new Car("Toyota", "Yaris", 2020, 0);
+        c1.display();
+        c1.drive(120);
+    }
+}</div>
+                </div>
+            </section>
+
+            <!-- Day 4 Section -->
+            <section class="day-section">
+                <h2 class="section-heading">Day 4 – Encapsulation & Abstraction</h2>
+                <div class="day-description">
+                    <strong>Learning Focus:</strong><br>
+                    • Understanding access modifiers (private, public)<br>
+                    • Data hiding and information security<br>
+                    • Using getters & setters for controlled access<br><br>
+                    
+                    Learned about the first two pillars of OOP! Encapsulation taught me how to protect class data from unauthorized access, while abstraction helped me hide complex implementation details behind simple interfaces.
+                </div>
+                <div class="code-section">
+                    <strong>Code Implementation:</strong>
+                    <div class="code-block">// BankAccount.java
+class BankAccount {
+    private String accountNumber;
+    private String owner;
+    private double balance;
+
+    BankAccount(String accountNumber, String owner, double balance) {
+        this.accountNumber = accountNumber;
+        this.owner = owner;
+        this.balance = balance;
+    }
+
+    public double getBalance() { return balance; }
+
+    public void deposit(double amount) {
+        if (amount > 0) balance += amount;
+    }
+
+    public void withdraw(double amount) {
+        if (amount > 0 && amount <= balance) balance -= amount;
+        else System.out.println("Insufficient funds!");
+    }
+
+    public void display() {
+        System.out.println("Account: " + accountNumber + ", Owner: " + owner + ", Balance: " + balance);
+    }
+}
+
+public class Day4BankDemo {
+    public static void main(String[] args) {
+        BankAccount acct = new BankAccount("AC123", "Anshuman", 500);
+        acct.display();
+        acct.deposit(250);
+        acct.withdraw(200);
+        acct.display();
+    }
+}</div>
+                </div>
+            </section>
+
+            <!-- Day 5 Section -->
+            <section class="day-section">
+                <h2 class="section-heading">Day 5 – Inheritance</h2>
+                <div class="day-description">
+                    <strong>Learning Focus:</strong><br>
+                    • Code reusability through inheritance<br>
+                    • Parent-child class relationships<br>
+                    • Method overriding and super keyword<br><br>
+                    
+                    Discovered the power of inheritance - the third pillar of OOP! Learned how child classes can inherit properties and methods from parent classes, promoting code reuse and creating natural hierarchies like Person → Student.
+                </div>
+                <div class="code-section">
+                    <strong>Code Implementation:</strong>
+                    <div class="code-block">// Person.java
+class Person {
+    String name;
+    int age;
+
+    Person(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+
+    void display() {
+        System.out.println("Name: " + name + ", Age: " + age);
+    }
+}
+
+class Student extends Person {
+    String rollNo, course;
+
+    Student(String name, int age, String rollNo, String course) {
+        super(name, age);
+        this.rollNo = rollNo;
+        this.course = course;
+    }
+
+    @Override
+    void display() {
+        super.display();
+        System.out.println("Roll No: " + rollNo + ", Course: " + course);
+    }
+}
+
+public class Day5InheritanceDemo {
+    public static void main(String[] args) {
+        Student s = new Student("Tanu", 20, "IT40", "B.E. IT");
+        s.display();
+    }
+}</div>
+                </div>
+            </section>
+
+            <!-- Day 6 Section -->
+            <section class="day-section">
+                <h2 class="section-heading">Day 6 – Polymorphism</h2>
+                <div class="day-description">
+                    <strong>Learning Focus:</strong><br>
+                    • Method overriding and runtime polymorphism<br>
+                    • Abstract classes and methods<br>
+                    • Dynamic method resolution<br><br>
+                    
+                    Mastered the fourth and final pillar of OOP! Polymorphism showed me how the same method call can behave differently based on the actual object type. Abstract classes provided a perfect way to define contracts that subclasses must implement.
+                </div>
+                <div class="code-section">
+                    <strong>Code Implementation:</strong>
+                    <div class="code-block">// Shape.java
+abstract class Shape {
+    abstract double area();
+}
+
+class Circle extends Shape {
+    double radius;
+    Circle(double radius) { this.radius = radius; }
+
+    @Override
+    double area() { return Math.PI * radius * radius; }
+}
+
+class Rectangle extends Shape {
+    double w, h;
+    Rectangle(double w, double h) { this.w = w; this.h = h; }
+
+    @Override
+    double area() { return w * h; }
+}
+
+public class Day6PolymorphismDemo {
+    public static void main(String[] args) {
+        Shape s1 = new Circle(5);
+        Shape s2 = new Rectangle(4, 6);
+
+        System.out.println("Circle area = " + s1.area());
+        System.out.println("Rectangle area = " + s2.area());
+    }
+}</div>
+                </div>
+            </section>
+
+            <!-- Day 7 Section -->
+            <section class="day-section">
+                <h2 class="section-heading">Day 7 – Mini Project (Library Management System)</h2>
+                <div class="day-description">
+                    <strong>Learning Focus:</strong><br>
+                    • Applying all OOP concepts in a real project<br>
+                    • System design and class relationships<br>
+                    • Building a complete working application<br><br>
+                    
+                    The culmination of my learning journey! Built a complete Library Management System that demonstrates all four OOP pillars. This project helped me understand how to design systems with multiple interacting classes and proper encapsulation.
+                </div>
+                <div class="code-section">
+                    <strong>Code Implementation:</strong>
+                    <div class="code-block">// Library Management System
+class Book {
+    String title, author, isbn;
+
+    Book(String title, String author, String isbn) {
+        this.title = title;
+        this.author = author;
+        this.isbn = isbn;
+    }
+
+    void display() {
+        System.out.println("Book: " + title + " by " + author + " [ISBN: " + isbn + "]");
+    }
+}
+
+class Member {
+    String name;
+    int memberId;
+
+    Member(String name, int memberId) {
+        this.name = name;
+        this.memberId = memberId;
+    }
+
+    void display() {
+        System.out.println("Member: " + name + " (ID: " + memberId + ")");
+    }
+}
+
+class Library {
+    Book[] books;
+    int count;
+
+    Library(int size) {
+        books = new Book[size];
+        count = 0;
+    }
+
+    void addBook(Book b) {
+        if (count < books.length) {
+            books[count++] = b;
+            System.out.println("Book added: " + b.title);
+        } else {
+            System.out.println("Library is full!");
+        }
+    }
+
+    void showBooks() {
+        System.out.println("--- Library Books ---");
+        for (int i = 0; i < count; i++) books[i].display();
+    }
+}
+
+public class Day7LibraryDemo {
+    public static void main(String[] args) {
+        Library lib = new Library(5);
+        Book b1 = new Book("OOP in Java", "James Gosling", "111");
+        Book b2 = new Book("Clean Code", "Robert Martin", "222");
+        Member m1 = new Member("Anshuman", 101);
+
+        lib.addBook(b1);
+        lib.addBook(b2);
+
+        m1.display();
+        lib.showBooks();
+    }
+}</div>
+                </div>
+            </section>
+
+            <!-- Learning Outcomes Section -->
+            <section class="learning-outcomes">
+                <h2 class="outcomes-heading">🎯 Key Learning Outcomes</h2>
+                <div class="outcomes-description">
+                    <strong>At the end of this 7-day journey, I successfully:</strong><br><br>
+                    • <strong>Mastered all four OOP pillars:</strong> Encapsulation, Abstraction, Inheritance, and Polymorphism<br>
+                    • <strong>Learned Java fundamentals:</strong> Variables, loops, conditionals, functions, and recursion<br>
+                    • <strong>Gained hands-on experience:</strong> Writing clean, object-oriented code with proper design patterns<br>
+                    • <strong>Built a real-world project:</strong> Library Management System demonstrating practical application<br>
+                    • <strong>Developed problem-solving skills:</strong> Breaking down complex problems into manageable objects and methods<br>
+                    • <strong>Understanding of system design:</strong> How to model real-world entities as classes and their relationships<br><br>
+                    
+                    This comprehensive learning experience provided me with a solid foundation in object-oriented programming concepts and practical Java development skills. The progression from basic programming concepts to building a complete application demonstrates the power and elegance of OOP principles in software development.
+                </div>
+            </section>
+        </div>
+
+        <footer class="footer">
+            Java Developer in Training – Made by <span class="highlight">KARAN FAD</span><br>
+            <div style="margin-top: 10px; font-size: 1.1rem; opacity: 0.9;">
+                Mentor: <span class="highlight">Atharv Pathak [AP]</span>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>

@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Fab Lab - Networking Documentation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            line-height: 1.6;
+            color: #e0e6ed;
+            background: linear-gradient(135deg, #0c0c0c 0%, #1a1a2e 25%, #16213e 50%, #0f3460 75%, #0c0c0c 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Animated Background Network */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 20% 80%, rgba(0, 255, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 0, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(0, 255, 127, 0.08) 0%, transparent 50%);
+            z-index: -2;
+            animation: networkPulse 8s ease-in-out infinite;
+        }
+
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(0,255,255,0.1)" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>') repeat;
+            z-index: -1;
+            animation: gridMove 20s linear infinite;
+        }
+
+        @keyframes networkPulse {
+            0%, 100% { transform: scale(1) rotate(0deg); opacity: 0.8; }
+            50% { transform: scale(1.1) rotate(180deg); opacity: 1; }
+        }
+
+        @keyframes gridMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(10px, 10px); }
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: rgba(12, 12, 12, 0.85);
+            min-height: 100vh;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(0, 255, 255, 0.1);
+            position: relative;
+        }
+
+        header {
+            background: linear-gradient(135deg, #000428 0%, #004e92 50%, #009ffd 100%);
+            color: white;
+            text-align: center;
+            padding: 4rem 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                linear-gradient(45deg, transparent 30%, rgba(0, 255, 255, 0.1) 50%, transparent 70%),
+                linear-gradient(-45deg, transparent 30%, rgba(255, 0, 255, 0.1) 50%, transparent 70%);
+            animation: headerShine 4s ease-in-out infinite;
+        }
+
+        @keyframes headerShine {
+            0%, 100% { transform: translateX(-100%); }
+            50% { transform: translateX(100%); }
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        h1 {
+            font-family: 'Orbitron', monospace;
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: #ffffff;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .subtitle {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 3rem;
+            font-weight: 700;
+            color: #00d4ff;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            margin-top: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .header-line {
+            width: 400px;
+            height: 4px;
+            background: linear-gradient(90deg, transparent, #00ff88, #00d4ff, #ff0080, transparent);
+            margin: 2rem auto;
+            border-radius: 2px;
+            animation: lineGlow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes lineGlow {
+            from { 
+                box-shadow: 0 0 10px rgba(0, 255, 136, 0.5), 0 0 20px rgba(0, 212, 255, 0.3); 
+                transform: scaleX(1);
+            }
+            to { 
+                box-shadow: 0 0 20px rgba(0, 255, 136, 0.8), 0 0 40px rgba(0, 212, 255, 0.6); 
+                transform: scaleX(1.1);
+            }
+        }
+
+        .content {
+            padding: 4rem 2rem;
+        }
+
+        .day-timeline {
+            position: relative;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .day-timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: linear-gradient(180deg, #00ff88, #00d4ff, #ff0080);
+            transform: translateX(-50%);
+            border-radius: 2px;
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.5);
+        }
+
+        .day-card {
+            position: relative;
+            margin: 4rem 0;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .day-card.animate {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .day-card:nth-child(odd) {
+            margin-left: 0;
+            margin-right: 55%;
+        }
+
+        .day-card:nth-child(even) {
+            margin-left: 55%;
+            margin-right: 0;
+        }
+
+        .day-card::before {
+            content: '';
+            position: absolute;
+            top: 2rem;
+            width: 20px;
+            height: 20px;
+            background: linear-gradient(135deg, #00ff88, #00d4ff);
+            border-radius: 50%;
+            border: 4px solid #0c0c0c;
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.8);
+            z-index: 5;
+        }
+
+        .day-card:nth-child(odd)::before {
+            right: -65px;
+        }
+
+        .day-card:nth-child(even)::before {
+            left: -65px;
+        }
+
+        .card-inner {
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.1), rgba(0, 212, 255, 0.1));
+            border: 2px solid rgba(0, 255, 136, 0.3);
+            border-radius: 20px;
+            padding: 2.5rem;
+            backdrop-filter: blur(15px);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s ease;
+        }
+
+        .card-inner::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 255, 136, 0.1), transparent);
+            transition: all 0.6s ease;
+        }
+
+        .day-card:hover .card-inner {
+            transform: translateY(-10px);
+            border-color: rgba(0, 255, 136, 0.6);
+            box-shadow: 0 20px 40px rgba(0, 255, 136, 0.2);
+        }
+
+        .day-card:hover .card-inner::before {
+            left: 100%;
+        }
+
+        .day-header {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #00ff88;
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 15px rgba(0, 255, 136, 0.5);
+        }
+
+        .day-description {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 2rem;
+            border-radius: 15px;
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #b8c6db;
+            min-height: 120px;
+        }
+
+        .day-description::before {
+            content: '📝';
+            font-size: 1.5rem;
+            float: left;
+            margin-right: 1rem;
+            margin-top: -0.2rem;
+        }
+
+        .images-section {
+            margin-top: 2rem;
+        }
+
+        .images-section h4 {
+            font-family: 'Space Mono', monospace;
+            color: #00d4ff;
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .images-container {
+            display: block;
+            width: 100%;
+        }
+
+        .image-placeholder {
+            height: 300px;
+            width: 100%;
+            background: linear-gradient(135deg, #000428, #004e92, #009ffd);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 1.2rem;
+            border: 2px solid rgba(0, 255, 255, 0.3);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        /* Image styling fix */
+        .image-placeholder img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 13px;
+            display: block;
+        }
+
+        .image-placeholder::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: all 0.6s ease;
+            z-index: 1;
+        }
+
+        .image-placeholder:hover {
+            transform: scale(1.05);
+            border-color: rgba(0, 255, 255, 0.6);
+            box-shadow: 0 15px 30px rgba(0, 255, 255, 0.3);
+        }
+
+        .image-placeholder:hover::before {
+            width: 300%;
+            height: 300%;
+        }
+
+        /* Ensure text is only shown when there's no image */
+        .image-placeholder:not(:has(img)):before {
+            z-index: 1;
+        }
+
+        .image-placeholder:has(img) {
+            color: transparent;
+            font-size: 0;
+        }
+
+        footer {
+            background: linear-gradient(135deg, #000428 0%, #004e92 100%);
+            color: white;
+            text-align: center;
+            padding: 3rem;
+            margin-top: 4rem;
+            position: relative;
+            border-top: 2px solid rgba(0, 255, 136, 0.3);
+        }
+
+        .footer-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .member-info {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .info-card {
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.1), rgba(0, 212, 255, 0.1));
+            padding: 2rem;
+            border-radius: 20px;
+            border: 2px solid rgba(0, 255, 136, 0.3);
+            backdrop-filter: blur(15px);
+            transition: all 0.4s ease;
+            min-width: 250px;
+        }
+
+        .info-card:hover {
+            transform: translateY(-5px) scale(1.05);
+            border-color: rgba(0, 255, 136, 0.6);
+            box-shadow: 0 20px 40px rgba(0, 255, 136, 0.2);
+        }
+
+        .info-card h4 {
+            font-family: 'Orbitron', monospace;
+            color: #00ff88;
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+        }
+
+        .info-card p {
+            font-family: 'Space Mono', monospace;
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #00d4ff;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            .subtitle {
+                font-size: 1.3rem;
+                letter-spacing: 1px;
+            }
+            
+            .day-timeline::before {
+                left: 2rem;
+            }
+            
+            .day-card:nth-child(odd),
+            .day-card:nth-child(even) {
+                margin-left: 4rem;
+                margin-right: 0;
+            }
+            
+            .day-card::before {
+                left: -45px !important;
+                right: auto !important;
+            }
+            
+            .member-info {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .content {
+                padding: 2rem 1rem;
+            }
+
+            .image-placeholder {
+                height: 250px;
+                font-size: 1rem;
+            }
+        }
+
+        /* Network Connection Lines Animation */
+        .network-lines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .network-line {
+            position: absolute;
+            background: linear-gradient(90deg, transparent, rgba(0, 255, 136, 0.3), transparent);
+            height: 1px;
+            animation: networkFlow 8s linear infinite;
+        }
+
+        @keyframes networkFlow {
+            0% { 
+                transform: translateX(-100%) rotate(45deg); 
+                opacity: 0; 
+            }
+            50% { 
+                opacity: 1; 
+            }
+            100% { 
+                transform: translateX(100vw) rotate(45deg); 
+                opacity: 0; 
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="network-lines" id="networkLines"></div>
+    
+    <div class="container">
+        <header>
+            <div class="header-content">
+                <h1>DIGITAL FAB LAB</h1>
+                <div class="header-line"></div>
+                <div class="subtitle">NETWORKING</div>
+            </div>
+        </header>
+
+        <div class="content">
+            <div class="day-timeline">
+                <!-- Day 1 -->
+                <div class="day-card">
+                    <div class="card-inner">
+                        <div class="day-header">Day 1</div>
+                        <div class="day-description">
+                            <!-- Add your day 1 description here -->
+                            Today I started my journey into networking fundamentals.I have Learned about Data Commmunication and its Component,Characteristics and types and the way to transmit data
+                            also i got to know difference in Network and Networking ,understanding how data flows through different network protocols. 
+                            Explored basic networking concepts including its types and  protocols.
+                        </div>
+                        <div class="images-section">
+                            <h4>📸 Day 1 Images</h4>
+                            <div class="images-container">
+                                <div class="image-placeholder"><img src="net1.jpeg" alt=""></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Day 2 -->
+                <div class="day-card">
+                    <div class="card-inner">
+                        <div class="day-header">Day 2</div>
+                        <div class="day-description">
+                            <!-- Add your day 2 description here -->
+                            Focused on Brief descriptiion about Bus Topologies Modes of communication are simplex, half-duplex, and full-duplex - for example, walkie-talkies vs. video calls.
+                            Understanding analog vs digital signals.Started with Concept of OSI model .What is DNS and Versions oF IP .
+                            Group forming and project assigning.
+                        </div>
+                        <div class="images-section">
+                            <h4>📸 Day 2 Images</h4>
+                            <div class="images-container">
+                                <div class="image-placeholder"><img src="net3.jpeg" alt=""></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Day 3 -->
+                <div class="day-card">
+                    <div class="card-inner">
+                        <div class="day-header">Day 3</div>
+                        <div class="day-description">
+                            <!-- Add your day 3 description here -->
+                            Deep dive into OSI Model and wireless networking standards.Detail study of OSI Model and its seven layer.
+                            Function of each layer and How data flows through the 7 layer . 
+                            Concepts of encapsulation & de-encapsulation: how headers/footers are applied at each layer.
+                            </div>
+                        <div class="images-section">
+                            <h4>📸 Day 3 Images</h4>
+                            <div class="images-container">
+                                <div class="image-placeholder"><img src="net6.jpeg" alt=""></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Day 4 -->
+                <div class="day-card">
+                    <div class="card-inner">
+                        <div class="day-header">Day 4</div>
+                        <div class="day-description">
+                            <!-- Add your day 4 description here -->
+                            Quick revision of OSI model concepts.Explore about Domain name,Sub domian,Root domain,Second level domain,and Basics os HTTP .
+                            DNS converts domain names to IP addresses functioning as the internet's "phonebook".
+                            </div>
+                        <div class="images-section">
+                            <h4>📸 Day 4 Images</h4>
+                            <div class="images-container">
+                                <div class="image-placeholder"><img src="net5.jpeg" alt=""></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Day 5 -->
+                <div class="day-card">
+                    <div class="card-inner">
+                        <div class="day-header">Day 5</div>
+                        <div class="day-description">
+                            <!-- Add your day 5 description here -->
+                            Learn about HTTP and its various Requests:
+                            GET REQUEST
+                            POST REQUEST 
+                            PUT REQUEST
+                            DELETE REQUEST 
+                        </div>
+                        <div class="images-section">
+                            <h4>📸 Day 5 Images</h4>
+                            <div class="images-container">
+                                <div class="image-placeholder"><img src="net7.jpeg" alt=""></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Day 6 -->
+                <div class="day-card">
+                    <div class="card-inner">
+                        <div class="day-header">Day 6</div>
+                        <div class="day-description">
+                            <!-- Add your day 6 description here -->
+                            Advanced Networking topics including URL.In URL I Have Learn About SCHEME,USER,HOST,PORT,PATH,QUERY STRING,FRAGNENT.
+                            I have also learned about Basics of DHCP.WHAT IS DHCP.
+                        </div>
+                        <div class="images-section">
+                            <h4>📸 Day 6 Images</h4>
+                            <div class="images-container">
+                                <div class="image-placeholder"><img src="net8.jpeg" alt=""></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Day 7 -->
+                <div class="day-card">
+                    <div class="card-inner">
+                        <div class="day-header">Day 7</div>
+                        <div class="day-description">
+                            <!-- Add your day 7 description here -->
+                            Today I have learned more about DHCP .MORE ABOUT -
+                             Discover ,DHCP Offers, DHCP Request, DHCP Acknowledge .
+                             Also It's interesting to know about ARP and IMCP.
+                        </div>
+                        <div class="images-section">
+                            <h4>📸 Day 7 Images</h4>
+                            <div class="images-container">
+                                <div class="image-placeholder"><img src="net9.jpeg" alt=""></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <div class="footer-content">
+                <h3 style="font-family: 'Orbitron', monospace; color: #00ff88; margin-bottom: 2rem; font-size: 1.5rem;">PROJECT TEAM</h3>
+                <div class="member-info">
+                    <div class="info-card">
+                        <h4>Digital Fab Lab Member</h4>
+                        <p>KARAN FAD</p>
+                    </div>
+                    <div class="info-card">
+                        <h4>Mentor</h4>
+                        <p>GORAV SHARMA</p>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // Intersection Observer for animations
+        const observerOptions = {
+            threshold: 0.2,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate');
+                }
+            });
+        }, observerOptions);
+
+        // Observe all day cards
+        document.querySelectorAll('.day-card').forEach(card => {
+            observer.observe(card);
+        });
+
+        // Create animated network lines
+        function createNetworkLine() {
+            const line = document.createElement('div');
+            line.className = 'network-line';
+            line.style.top = Math.random() * 100 + 'vh';
+            line.style.width = Math.random() * 200 + 100 + 'px';
+            line.style.left = '-200px';
+            
+            document.getElementById('networkLines').appendChild(line);
+            
+            setTimeout(() => {
+                line.remove();
+            }, 8000);
+        }
+
+        // Create network lines periodically
+        setInterval(createNetworkLine, 2000);
+
+        // Enhanced hover effects for image placeholders
+        document.querySelectorAll('.image-placeholder').forEach(placeholder => {
+            placeholder.addEventListener('mousemove', function(e) {
+                const rect = this.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                
+                const rotateX = (y - centerY) / 10;
+                const rotateY = (centerX - x) / 10;
+                
+                this.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.05)`;
+            });
+            
+            placeholder.addEventListener('mouseleave', function() {
+                this.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1)';
+            });
+        });
+
+        // Smooth scroll enhancement
+        document.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const parallax = document.querySelector('body::before');
+            
+            // Add subtle parallax effect to background
+            document.body.style.setProperty('--scroll', scrolled * 0.5 + 'px');
+        });
+
+        // Add floating particles effect
+        function createParticle() {
+            const particle = document.createElement('div');
+            particle.style.position = 'fixed';
+            particle.style.width = '3px';
+            particle.style.height = '3px';
+            particle.style.background = '#00ff88';
+            particle.style.borderRadius = '50%';
+            particle.style.pointerEvents = 'none';
+            particle.style.zIndex = '1000';
+            particle.style.boxShadow = '0 0 10px #00ff88';
+            
+            const startX = Math.random() * window.innerWidth;
+            const startY = window.innerHeight + 10;
+            
+            particle.style.left = startX + 'px';
+            particle.style.top = startY + 'px';
+            
+            document.body.appendChild(particle);
+            
+            const animation = particle.animate([
+                { 
+                    transform: 'translateY(0px) rotate(0deg)', 
+                    opacity: 0 
+                },
+                { 
+                    transform: `translateY(-${window.innerHeight * 0.3}px) rotate(180deg)`, 
+                    opacity: 1 
+                },
+                { 
+                    transform: `translateY(-${window.innerHeight + 100}px) rotate(360deg)`, 
+                    opacity: 0 
+                }
+            ], {
+                duration: 8000 + Math.random() * 4000,
+                easing: 'ease-out'
+            });
+            
+            animation.onfinish = () => particle.remove();
+        }
+
+        // Create particles periodically
+        setInterval(createParticle, 3000);
+
+        // Add click ripple effect
+        document.querySelectorAll('.image-placeholder, .info-card').forEach(element => {
+            element.addEventListener('click', function(e) {
+                const ripple = document.createElement('span');
+                const rect = this.getBoundingClientRect();
+                const size = Math.max(rect.width, rect.height);
+                const x = e.clientX - rect.left - size / 2;
+                const y = e.clientY - rect.top - size / 2;
+                
+                ripple.style.width = ripple.style.height = size + 'px';
+                ripple.style.left = x + 'px';
+                ripple.style.top = y + 'px';
+                ripple.style.position = 'absolute';
+                ripple.style.borderRadius = '50%';
+                ripple.style.background = 'rgba(0, 255, 136, 0.4)';
+                ripple.style.transform = 'scale(0)';
+                ripple.style.animation = 'ripple 0.6s linear';
+                ripple.style.pointerEvents = 'none';
+                
+                this.style.position = 'relative';
+                this.appendChild(ripple);
+                
+                setTimeout(() => {
+                    ripple.remove();
+                }, 600);
+            });
+        });
+
+        // Add CSS for ripple animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes ripple {
+                to {
+                    transform: scale(2);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
